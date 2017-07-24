@@ -13,7 +13,7 @@ final class EJO_Widget_Template_Loader
     protected static $_instance = null;
 
     //* Directory name where custom templates for this plugin should be found in the theme.
-    protected static $theme_template_directory = 'widget';
+    protected static $theme_widget_template_dir = 'widgets';
 
     //* Only instantiate once
     public static function init() 
@@ -57,19 +57,20 @@ final class EJO_Widget_Template_Loader
 	 */
 	public static function get_template_directories() 
 	{
-		$theme_template_directory = trailingslashit( self::$theme_template_directory );
+		$theme_widget_template_dir = trailingslashit( apply_filters( 'ejo_widget_template_dir', self::$theme_widget_template_dir ) );
+		$theme_template_dir = trailingslashit( apply_filters( 'ejo_theme_template_dir', '' ) );
 
 		//* Prioritized order of template locations
 		$template_directories = array();
 
 		//* Start by setting theme location high in order
-		$template_directories[10] = trailingslashit( get_template_directory() ) . $theme_template_directory;
-		$template_directories[11] = trailingslashit( get_template_directory() );
+		$template_directories[10] = trailingslashit( get_template_directory() ) . $theme_template_dir . $theme_widget_template_dir;
+		$template_directories[11] = trailingslashit( get_template_directory() ) . $theme_template_dir;
 
 		//* Set child theme location first if active
 		if ( is_child_theme() ) {
-			$template_directories[1] = trailingslashit( get_stylesheet_directory() ) . $theme_template_directory;
-			$template_directories[2] = trailingslashit( get_stylesheet_directory() );
+			$template_directories[1] = trailingslashit( get_stylesheet_directory() ) . $theme_template_dir . $theme_widget_template_dir;
+			$template_directories[2] = trailingslashit( get_stylesheet_directory() ) . $theme_template_dir;
 		}
 
 		// Sort the file paths based on priority.
@@ -108,6 +109,14 @@ final class EJO_Widget_Template_Loader
 
 		//* Return false if no file found
 		return false;
+	}
+
+	/**
+	 * Get template file.
+	 */
+	public static function get_template( $args, $widget )
+	{
+		return self::get_template_file( $widget->id_base, $args['id'] );
 	}
 
 	/**
