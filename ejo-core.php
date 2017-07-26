@@ -5,11 +5,9 @@
  * Minimum PHP version: 5.3.0
  *
  * @package   EJO Core
- * @version   0.1.0
- * @since     0.1.0
  * @author    Erik Joling <erik@ejoweb.nl>
  * @copyright Copyright (c) 2017, Erik Joling
- * @link      http://github.com/erikjoling
+ * @link      https://github.com/erikjoling/ejo-core
  */
 
 /**
@@ -49,7 +47,7 @@ final class EJO_Core
     private function __construct() 
     {
         /* Setup plugin */
-        add_action( 'after_setup_theme', array( 'EJO_Core', 'setup' ), -99 );
+        add_action( 'after_setup_theme', array( 'EJO_Core', 'setup' ), -95 );
 
         /* Make helpers immediatly available */
         add_action( 'after_setup_theme', array( 'EJO_Core', 'helpers' ), 0 );
@@ -70,6 +68,17 @@ final class EJO_Core
     {
         self::$dir = plugin_dir_path( __FILE__ );
         self::$uri = plugin_dir_url( __FILE__ );
+
+        $relative_framework_path = trailingslashit( apply_filters( 'ejocore_relative_framework_path', 'includes/vendor/' ) );
+
+        // Sets the path to the core framework directory.
+        if ( ! defined( 'EJO_CORE_DIR' ) )
+            define( 'EJO_CORE_DIR', trailingslashit( THEME_DIR . $relative_framework_path . basename( dirname( __FILE__ ) ) ) );
+
+        // Sets the path to the core framework directory URI.
+        if ( ! defined( 'EJO_CORE_URI' ) ) {
+            define( 'EJO_CORE_URI', trailingslashit( THEME_URI . $relative_framework_path . basename( dirname( __FILE__ ) ) ) );
+        }
     }
 
     /* Add helper functions */
