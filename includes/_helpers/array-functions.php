@@ -10,12 +10,14 @@
 /**
  * Delete the first array-record based on value
  */
-function array_unset_by_value( $value, $array )
+function ejo_array_unset_value( $value, &$array )
 {
 	$key = array_search($value, $array);
 
-	if( $key !== false)
+	if ( $key !== false ) {
 		unset($array[$key]);
+        return true;
+    }
 
-	return $array;
+    return false;
 }

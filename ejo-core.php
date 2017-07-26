@@ -49,13 +49,13 @@ final class EJO_Core
     private function __construct() 
     {
         /* Setup plugin */
-        self::setup();
+        add_action( 'after_setup_theme', array( 'EJO_Core', 'setup' ), -99 );
 
         /* Make helpers immediatly available */
-        self::helpers();
+        add_action( 'after_setup_theme', array( 'EJO_Core', 'helpers' ), 0 );
 
         /* Core. Loaded after theme setup so themes can manipulate it */        
-        add_action( 'after_setup_theme', array( 'EJO_Core', 'base' ) );
+        add_action( 'after_setup_theme', array( 'EJO_Core', 'base' ), 10 );
     }
 
     
