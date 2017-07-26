@@ -1,14 +1,11 @@
 <?php
 
-if ( current_theme_supports( 'ejo-text-editor' ) ) {
+//* Customize the icons on the tinyMCE rows
+add_filter( 'mce_buttons', 'ejo_mce_buttons' );
+add_filter( 'mce_buttons_2', 'ejo_mce_buttons_2' );
 
-    //* Customize the icons on the tinyMCE rows
-    add_filter( 'mce_buttons', 'ejo_mce_buttons' );
-    add_filter( 'mce_buttons_2', 'ejo_mce_buttons_2' );
-
-    //* Customize block format possibilities
-    add_filter( 'tiny_mce_before_init', 'ejo_tinymce_formats' );
-}
+//* Customize block format possibilities
+add_filter( 'tiny_mce_before_init', 'ejo_tinymce_formats' );
 
 
 /** 

@@ -4,19 +4,12 @@
  * Add common shortcodes
  */
 // Simple current year shortcode
-add_shortcode( 'year', 'ejo_get_year' );
+add_shortcode( 'year', function() {
+    return date('Y');
+} );
 
 //* Client copyright
 add_shortcode( 'copyright', 'ejo_get_client_copyright' );
-
-/**
- * Get current year from php and return it
- */
-function ejo_get_year() 
-{
-    $year = date('Y');
-    return $year;
-}
 
 /**
  * Get Client Copyright statement

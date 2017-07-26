@@ -1,22 +1,20 @@
 <?php 
 
-if ( current_theme_supports( 'ejo-admin-menu' ) ) {
+/* Change menu order */
+add_action( 'admin_menu', 'ejo_change_menu_order' );
 
-	/* Change menu order */
-	add_action( 'admin_menu', 'ejo_change_menu_order' );
+/* Change Appearance submenu order */
+add_action( 'admin_menu', 'ejo_change_appearance_menu_order' );
 
-	/* Change Appearance submenu order */
-	add_action( 'admin_menu', 'ejo_change_appearance_menu_order' );
+/* Remove Themes submenu */
+add_action( 'admin_menu', 'ejo_remove_themes_submenu', 99 );
 
-	/* Remove Themes submenu */
-	add_action( 'admin_menu', 'ejo_remove_themes_submenu', 99 );
+/* Remove Tools submenu */
+add_action( 'admin_menu', 'ejo_remove_tools_submenu', 99 );
 
-	/* Remove Tools submenu */
-	add_action( 'admin_menu', 'ejo_remove_tools_submenu', 99 );
+/* [Plugin] WordPress SEO: Remove Go Premium and Search Console from menu */
+add_filter( 'wpseo_submenu_pages', 'ejo_remove_seo_submenus' );
 
-    /* [Plugin] WordPress SEO: Remove Go Premium and Search Console from menu */
-    add_filter( 'wpseo_submenu_pages', 'ejo_remove_seo_submenus' );
-}
 
 /* Remove unnecesary menus */
 function ejo_change_menu_order()

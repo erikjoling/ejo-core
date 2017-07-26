@@ -86,42 +86,48 @@ final class EJO_Core
          * Remove unnecessary functionality
          */
 
-        /* Remove Posts functionality */
-        require_once( self::$dir . 'includes/remove-posts-functionality.php' );
+        /* Hide Blogging functionality */
+        require_if_theme_supports( 'hide-blogging', self::$dir . 'includes/hide-blogging.php' );
 
-        /* Remove unnecessary HTML Header elements */
-        require_once( self::$dir . 'includes/remove-html-header-elements.php' );
+        /* Cleanup unnecessary HTML Header elements */
+        require_if_theme_supports( 'cleanup-header', self::$dir . 'includes/cleanup-html-header.php' );
 
-        /* Remove unnecessary XML-RPC and Pingback functionality */
-        require_once( self::$dir . 'includes/remove-xmlrpc-and-pingback.php' );
+        /* Disable unnecessary XML-RPC and Pingback functionality */
+        require_if_theme_supports( 'disable-xmlrpc', self::$dir . 'includes/disable-xmlrpc.php' );
 
-        /* Remove unnecessary widgets */
-        require_once( self::$dir . 'includes/remove-widgets.php');
+        /* Cleanup unnecessary widgets */
+        require_if_theme_supports( 'cleanup-widgets', self::$dir . 'includes/cleanup-widgets.php' );
+
+        /* Disable emoji support */
+        require_if_theme_supports( 'disable-emojis', self::$dir . 'includes/disable-emojis.php' );
 
         /**
          * Add custom functionality
          */
 
-        /* Custom Scripts (Site and individual Posts) */
-        require_once( self::$dir . 'includes/custom-scripts/add-custom-scripts.php' );
+        /* Allow admin to add scripts to entire site */
+        require_if_theme_supports( 'site-scripts', self::$dir . 'includes/custom-scripts/add-site-scripts.php' );
+
+        /* Allow admin to add scripts to specific posts */
+        require_if_theme_supports( 'post-scripts', self::$dir . 'includes/custom-scripts/add-post-scripts.php' );
 
         /* Social Media */
-        require_once( self::$dir . 'includes/social-media/add-social-media.php');
+        require_if_theme_supports( 'social-media-links', self::$dir . 'includes/social-media/links/social-media-links.php');
 
         /* Shortcodes */
-        require_once( self::$dir . 'includes/shortcodes/shortcodes.php' );
+        require_if_theme_supports( 'ejo-shortcodes', self::$dir . 'includes/shortcodes/shortcodes.php' );
 
         /**
          * Tweak WordPress Admin
          */
 
         /* Mold the admin menu to my liking */
-        require_once( self::$dir . 'includes/ejo-admin-menu.php' );
+        require_if_theme_supports( 'ejo-admin-menu', self::$dir . 'includes/ejo-admin-menu.php' );
 
         /* Mold the admin dashboard to my liking */
-        require_once( self::$dir . 'includes/ejo-admin-dashboard.php');
+        require_if_theme_supports( 'ejo-admin-dashboard', self::$dir . 'includes/ejo-admin-dashboard.php');
 
         /* Mold the text editor to my liking */
-        require_once( self::$dir . 'includes/ejo-text-editor.php' ); 
+        require_if_theme_supports( 'ejo-text-editor', self::$dir . 'includes/ejo-text-editor.php' ); 
     }
 }

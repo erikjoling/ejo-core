@@ -14,6 +14,7 @@
  * - Activity Dashboard widget
  * - Number of posts in 'right now' Dashboard widget
  * - Recent Posts widget
+ * - RSS Feeds
  * 
  * to do:
  * - Posts in sitemap
@@ -21,24 +22,28 @@
  * -  
  */ 
 
-// if ( ! current_theme_supports( 'blog' ) ) {
+/* Remove posts menu */
+add_action( 'admin_menu', 'ejo_remove_posts_menu', 99);
 
-//     /* Remove posts menu */
-//     add_action( 'admin_menu', 'ejo_remove_posts_menu', 99);
+//* Remove new-post from admin-bar
+add_action( 'admin_bar_menu', 'ejo_remove_posts_menubar', 99);
 
-//     //* Remove new-post from admin-bar
-//     add_action( 'admin_bar_menu', 'ejo_remove_posts_menubar', 99);
+//* Restrict access to posts screen (edit-posts, categories, tags, new-post)
+add_action( 'current_screen', 'ejo_disallow_posts_screen' );
 
-//     //* Restrict access to posts screen (edit-posts, categories, tags, new-post)
-//     add_action( 'current_screen', 'ejo_disallow_posts_screen' );
+//* Remove post-related dashboard widgets
+add_action( 'admin_init', 'ejo_remove_posts_dashboard' );
 
-//     //* Remove post-related dashboard widgets
-//     add_action( 'admin_init', 'ejo_remove_posts_dashboard' );
+//* Remove widget 
+add_filter( 'ejo_base_unregister_widgets', 'ejo_remove_posts_widget' );
 
-//     //* Remove widget 
-//     add_filter( 'ejo_base_unregister_widgets', 'ejo_remove_posts_widget' );
-// }
+//* Disable RSS Feeds
+add_action( 'template_redirect', 'ejo_disable_rss_feeds', 1 );
 
+//* Remove Blog Feed links
+remove_action( 'wp_head', 'feed_links', 2 );
+remove_action( 'wp_head', 'feed_links_extra', 3 );
+    
 
 /* Remove posts menu */
 function ejo_remove_posts_menu() 
@@ -114,4 +119,23 @@ function ejo_remove_posts_widget($widgets_to_unregister)
     $widgets_to_unregister[] = 'WP_Widget_Recent_Posts';
 
     return $widgets_to_unregister;
+}
+
+/**
+ * Server 404 on feeds
+ */
+function ejo_disable_rss_feeds() {
+    global $wp_query;
+
+    // Only continue if it's a feed!
+    if (!is_feed()) 
+        return; 
+
+    // Serve 404
+    $wp_query->is_feed = false;
+    $wp_query->set_404();
+    status_header( 404 );
+
+    // Override the xml+rss header set by WP in send_headers
+    header( 'Content-Type: ' . get_option('html_type') . '; charset=' . get_option('blog_charset') );
 }

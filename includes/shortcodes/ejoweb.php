@@ -30,11 +30,5 @@ function ejoweb_credits( $atts )
         'title' => 'Website gemaakt door Ejoweb'
     ), $atts );
 
-    if (is_front_page()) :
-        $output = ejoweb_link( $atts );
-    else :
-        $output = $atts['text'];
-    endif;
-
-    return '<span class="site-credits">' . $output . '</span>';
+    return '<span class="site-credits">' . ejoweb_link( $atts ) . '</span>';
 }
