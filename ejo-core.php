@@ -55,7 +55,10 @@ final class EJO_Core
         add_action( 'after_setup_theme', array( 'EJO_Core', 'helpers' ), 0 );
 
         /* Core. Loaded after theme setup so themes can manipulate it */        
-        add_action( 'after_setup_theme', array( 'EJO_Core', 'base' ), 10 );
+        add_action( 'after_setup_theme', array( 'EJO_Core', 'core' ), 10 );
+
+        /* EJOpack. Should be extracted a plugin */        
+        add_action( 'after_setup_theme', array( 'EJO_Core', 'ejopack' ), 10 );
     }
 
     
@@ -80,11 +83,9 @@ final class EJO_Core
     }
     
     /* The Core */
-    public static function base() 
+    public static function core() 
     {
-        /**
-         * Remove unnecessary functionality
-         */
+        //* Remove/disable/hide unnecessary functionality
 
         /* Hide Blogging functionality */
         require_if_theme_supports( 'hide-blogging', self::$dir . 'includes/hide-blogging.php' );
@@ -101,25 +102,7 @@ final class EJO_Core
         /* Disable emoji support */
         require_if_theme_supports( 'disable-emojis', self::$dir . 'includes/disable-emojis.php' );
 
-        /**
-         * Add custom functionality
-         */
-
-        /* Allow admin to add scripts to entire site */
-        require_if_theme_supports( 'site-scripts', self::$dir . 'includes/custom-scripts/add-site-scripts.php' );
-
-        /* Allow admin to add scripts to specific posts */
-        require_if_theme_supports( 'post-scripts', self::$dir . 'includes/custom-scripts/add-post-scripts.php' );
-
-        /* Social Media */
-        require_if_theme_supports( 'social-media-links', self::$dir . 'includes/social-media/links/social-media-links.php');
-
-        /* Shortcodes */
-        require_if_theme_supports( 'ejo-shortcodes', self::$dir . 'includes/shortcodes/shortcodes.php' );
-
-        /**
-         * Tweak WordPress Admin
-         */
+        //* Tweak WordPress Admin
 
         /* Mold the admin menu to my liking */
         require_if_theme_supports( 'ejo-admin-menu', self::$dir . 'includes/ejo-admin-menu.php' );
@@ -129,5 +112,21 @@ final class EJO_Core
 
         /* Mold the text editor to my liking */
         require_if_theme_supports( 'ejo-text-editor', self::$dir . 'includes/ejo-text-editor.php' ); 
+    }
+
+    /* Functionality to extract to a plugin */
+    public static function ejopack() 
+    {
+        /* Allow admin to add scripts to entire site */
+        require_if_theme_supports( 'site-scripts', self::$dir . '_ejopack/custom-scripts/add-site-scripts.php' );
+
+        /* Allow admin to add scripts to specific posts */
+        require_if_theme_supports( 'post-scripts', self::$dir . '_ejopack/custom-scripts/add-post-scripts.php' );
+
+        /* Social Media */
+        require_if_theme_supports( 'social-media-links', self::$dir . '_ejopack/social-media/links/social-media-links.php');
+
+        /* Shortcodes */
+        require_if_theme_supports( 'ejo-shortcodes', self::$dir . '_ejopack/shortcodes/shortcodes.php' );
     }
 }
