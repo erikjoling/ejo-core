@@ -80,9 +80,6 @@ final class EJO_Core
 
         /* Theme helpers */
         require_once( self::$dir . 'includes/_helpers/misc.php' );
-
-        /* Widget Template Loader Class */
-        require_once( self::$dir . 'includes/_helpers/widget-template-loader/widget-template-loader.php' );
     }
 
     /* Templating Logic */
@@ -99,6 +96,9 @@ final class EJO_Core
 
         /* Template misc */
         require_once( self::$dir . 'includes/templating/template-misc.php' );
+
+        /* Widget Template Loader Class */
+        require_once( self::$dir . 'includes/templating/widget-template-loader/widget-template-loader.php' );
     }
     
     /* Molding WordPress */
