@@ -79,7 +79,7 @@ if ( !current_user_can( 'edit_theme_options' ) )  {
         </table>
 
         <p>
-            <?php submit_button( __('Bewaar instellingen', EJO_Base::$slug), 'primary', 'submit', false ); ?>
+            <?php submit_button( __('Bewaar instellingen', EJO_Core::$slug), 'primary', 'submit', false ); ?>
         </p>
     
     </form>
