@@ -54,8 +54,11 @@ final class EJO_Core
         /* Make helpers immediatly available */
         add_action( 'after_setup_theme', array( 'EJO_Core', 'helpers' ), 0 );
 
-        /* Core. Loaded after theme setup so themes can manipulate it */        
-        add_action( 'after_setup_theme', array( 'EJO_Core', 'core' ), 10 );
+        /* Templating */
+        add_action( 'after_setup_theme', array( 'EJO_Core', 'templating' ), 5 );
+
+        /* Molding WordPress. Loaded after theme setup so themes can manipulate it */        
+        add_action( 'after_setup_theme', array( 'EJO_Core', 'mold' ), 10 );
 
         /* EJOpack. Should be extracted a plugin */        
         add_action( 'after_setup_theme', array( 'EJO_Core', 'ejopack' ), 10 );
@@ -75,15 +78,31 @@ final class EJO_Core
         /* Write Log */
         require_once( self::$dir . 'includes/_helpers/write-log.php' );
 
-        /* Useful array functions */
-        require_once( self::$dir . 'includes/_helpers/array-functions.php' );
+        /* Theme helpers */
+        require_once( self::$dir . 'includes/_helpers/misc.php' );
 
         /* Widget Template Loader Class */
         require_once( self::$dir . 'includes/_helpers/widget-template-loader/widget-template-loader.php' );
     }
+
+    /* Templating Logic */
+    public static function templating() 
+    {
+        /* Template functions */
+        require_once( self::$dir . 'includes/templating/template-functions.php' );
+
+        /* Template Structure */
+        require_once( self::$dir . 'includes/templating/template-structure.php' );
+
+        /* Template Tags */
+        require_once( self::$dir . 'includes/templating/template-tags.php' );
+
+        /* Template misc */
+        require_once( self::$dir . 'includes/templating/template-misc.php' );
+    }
     
-    /* The Core */
-    public static function core() 
+    /* Molding WordPress */
+    public static function mold() 
     {
         //* Remove/disable/hide unnecessary functionality
 
