@@ -24,12 +24,6 @@ final class EJO_Core
     /* Store the slug of this plugin */
     public static $slug = 'ejo-core';
 
-    /* Stores the directory path for this plugin. */
-    public static $dir;
-
-    /* Stores the directory URI for this plugin. */
-    public static $uri;
-
     /**
      * Singleton implementation (Only instantiate once)
      */
@@ -66,9 +60,6 @@ final class EJO_Core
     /* Defines the directory path and URI. */
     public static function setup() 
     {
-        self::$dir = plugin_dir_path( __FILE__ );
-        self::$uri = plugin_dir_url( __FILE__ );
-
         $relative_framework_path = trailingslashit( apply_filters( 'ejocore_relative_framework_path', 'includes/vendor/' ) );
 
         // Sets the path to the core framework directory.
@@ -85,29 +76,29 @@ final class EJO_Core
     public static function helpers() 
     {
         /* Write Log */
-        require_once( self::$dir . 'includes/_helpers/write-log.php' );
+        require_once( EJO_CORE_DIR . 'includes/_helpers/write-log.php' );
 
         /* Theme helpers */
-        require_once( self::$dir . 'includes/_helpers/misc.php' );
+        require_once( EJO_CORE_DIR . 'includes/_helpers/misc.php' );
     }
 
     /* Templating Logic */
     public static function templating() 
     {
         /* Template functions */
-        require_once( self::$dir . 'includes/templating/template-functions.php' );
+        require_once( EJO_CORE_DIR . 'includes/templating/template-functions.php' );
 
         /* Template Structure */
-        require_once( self::$dir . 'includes/templating/template-structure.php' );
+        require_once( EJO_CORE_DIR . 'includes/templating/template-structure.php' );
 
         /* Template Tags */
-        require_once( self::$dir . 'includes/templating/template-tags.php' );
+        require_once( EJO_CORE_DIR . 'includes/templating/template-tags.php' );
 
         /* Template misc */
-        require_once( self::$dir . 'includes/templating/template-misc.php' );
+        require_once( EJO_CORE_DIR . 'includes/templating/template-misc.php' );
 
         /* Widget Template Loader Class */
-        require_once( self::$dir . 'includes/templating/widget-template-loader/widget-template-loader.php' );
+        require_once( EJO_CORE_DIR . 'includes/templating/widget-template-loader/widget-template-loader.php' );
     }
     
     /* Molding WordPress */
@@ -116,45 +107,45 @@ final class EJO_Core
         //* Remove/disable/hide unnecessary functionality
 
         /* Hide Blogging functionality */
-        require_if_theme_supports( 'hide-blogging', self::$dir . 'includes/hide-blogging.php' );
+        require_if_theme_supports( 'hide-blogging', EJO_CORE_DIR . 'includes/hide-blogging.php' );
 
         /* Cleanup unnecessary HTML Header elements */
-        require_if_theme_supports( 'cleanup-header', self::$dir . 'includes/cleanup-html-header.php' );
+        require_if_theme_supports( 'cleanup-header', EJO_CORE_DIR . 'includes/cleanup-html-header.php' );
 
         /* Disable unnecessary XML-RPC and Pingback functionality */
-        require_if_theme_supports( 'disable-xmlrpc', self::$dir . 'includes/disable-xmlrpc.php' );
+        require_if_theme_supports( 'disable-xmlrpc', EJO_CORE_DIR . 'includes/disable-xmlrpc.php' );
 
         /* Cleanup unnecessary widgets */
-        require_if_theme_supports( 'cleanup-widgets', self::$dir . 'includes/cleanup-widgets.php' );
+        require_if_theme_supports( 'cleanup-widgets', EJO_CORE_DIR . 'includes/cleanup-widgets.php' );
 
         /* Disable emoji support */
-        require_if_theme_supports( 'disable-emojis', self::$dir . 'includes/disable-emojis.php' );
+        require_if_theme_supports( 'disable-emojis', EJO_CORE_DIR . 'includes/disable-emojis.php' );
 
         //* Tweak WordPress Admin
 
         /* Mold the admin menu to my liking */
-        require_if_theme_supports( 'ejo-admin-menu', self::$dir . 'includes/ejo-admin-menu.php' );
+        require_if_theme_supports( 'ejo-admin-menu', EJO_CORE_DIR . 'includes/ejo-admin-menu.php' );
 
         /* Mold the admin dashboard to my liking */
-        require_if_theme_supports( 'ejo-admin-dashboard', self::$dir . 'includes/ejo-admin-dashboard.php');
+        require_if_theme_supports( 'ejo-admin-dashboard', EJO_CORE_DIR . 'includes/ejo-admin-dashboard.php');
 
         /* Mold the text editor to my liking */
-        require_if_theme_supports( 'ejo-text-editor', self::$dir . 'includes/ejo-text-editor.php' ); 
+        require_if_theme_supports( 'ejo-text-editor', EJO_CORE_DIR . 'includes/ejo-text-editor.php' ); 
     }
 
     /* Functionality to extract to a plugin */
     public static function ejopack() 
     {
         /* Allow admin to add scripts to entire site */
-        require_if_theme_supports( 'site-scripts', self::$dir . '_ejopack/custom-scripts/add-site-scripts.php' );
+        require_if_theme_supports( 'site-scripts', EJO_CORE_DIR . '_ejopack/custom-scripts/add-site-scripts.php' );
 
         /* Allow admin to add scripts to specific posts */
-        require_if_theme_supports( 'post-scripts', self::$dir . '_ejopack/custom-scripts/add-post-scripts.php' );
+        require_if_theme_supports( 'post-scripts', EJO_CORE_DIR . '_ejopack/custom-scripts/add-post-scripts.php' );
 
         /* Social Media */
-        require_if_theme_supports( 'social-media-links', self::$dir . '_ejopack/social-media/links/social-media-links.php');
+        require_if_theme_supports( 'social-media-links', EJO_CORE_DIR . '_ejopack/social-media/links/social-media-links.php');
 
         /* Shortcodes */
-        require_if_theme_supports( 'ejo-shortcodes', self::$dir . '_ejopack/shortcodes/shortcodes.php' );
+        require_if_theme_supports( 'ejo-shortcodes', EJO_CORE_DIR . '_ejopack/shortcodes/shortcodes.php' );
     }
 }

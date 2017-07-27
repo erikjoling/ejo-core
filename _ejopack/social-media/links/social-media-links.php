@@ -58,7 +58,7 @@ class EJO_Social_Media_Links
         self::$dir = trailingslashit( dirname( __FILE__ ) );
 
         //* Dynamicly get this folder url
-        self::$uri = EJO_Core::$uri . str_replace(EJO_Core::$dir, '', self::$dir);
+        self::$uri = EJO_CORE_URI . str_replace(EJO_CORE_DIR, '', self::$dir);
 
         self::$menu_title = __('Social Media Links', EJO_Core::$slug);
         self::$page_title = __('Social Media Links', EJO_Core::$slug);
