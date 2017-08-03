@@ -87,9 +87,7 @@ function ejo_get_content_template( $post_type = '', $template_type = '', $requir
 
         // Add archive template_type to posts in archives
         if ( is_archive() || is_home() ) {
-
             $template_type = 'plural';
-            $require_once = false;
         }
     }
 
@@ -98,6 +96,11 @@ function ejo_get_content_template( $post_type = '', $template_type = '', $requir
 
         $templates[] = $template_parts_dir. "content/{$post_type}/{$post_type}-{$template_type}.php";
         $templates[] = $template_parts_dir. "content/{$post_type}-{$template_type}.php";
+    }
+
+    // If template type is plural then we need to include the template-part more than once
+    if ($template_type == 'plural') {
+        $require_once = false;        
     }
 
     // Template based off the post type.
