@@ -1,6 +1,10 @@
 <?php 
 
 /*
+Disable Emojis
+Version: 1.7
+Author: Ryan Hellyer
+Author URI: https://geek.hellyer.kiwi/
 
 Copyright Ryan Hellyer
 
@@ -22,9 +26,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 /**
  * Disable the emoji's
- *
- * Note: Emoticons will still work and emoji's will still work in browsers which have built in support for them. 
- *       This plugin simply removes the extra code bloat used to add support for emoji's in older browsers.
  */
 function disable_emojis() {
     remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
@@ -61,11 +62,17 @@ function disable_emojis_tinymce( $plugins ) {
  * @return array                 Difference betwen the two arrays.
  */
 function disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
-    if ( 'dns-prefetch' == $relation_type ) {
-        /** This filter is documented in wp-includes/formatting.php */
-        $emoji_svg_url = apply_filters( 'emoji_svg_url', 'https://s.w.org/images/core/emoji/2.2.1/svg/' );
 
-        $urls = array_diff( $urls, array( $emoji_svg_url ) );
+    if ( 'dns-prefetch' == $relation_type ) {
+
+        // Strip out any URLs referencing the WordPress.org emoji location
+        $emoji_svg_url_bit = 'https://s.w.org/images/core/emoji/';
+        foreach ( $urls as $key => $url ) {
+            if ( strpos( $url, $emoji_svg_url_bit ) !== false ) {
+                unset( $urls[$key] );
+            }
+        }
+
     }
 
     return $urls;

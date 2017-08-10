@@ -18,14 +18,14 @@ final class EJO_Core
     /* Holds the instance of this Singleton class. */
     private static $_instance = null;
 
-    /* Version number of this plugin */
-    public static $version = '0.1';
+    /* Version number */
+    public static $version = '0.1.1';
 
-    /* Store the slug of this plugin */
+    /* Store the slug */
     public static $slug = 'ejo-core';
 
     /**
-     * Singleton implementation (Only instantiate once)
+     * Singleton implementation
      */
     public static function load() 
     {
