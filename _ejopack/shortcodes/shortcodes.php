@@ -18,6 +18,9 @@ add_filter( 'widget_text', 'shortcode_unautop', 9 );
 /* Common Shortcodes */
 require_once( __DIR__ . '/common.php' ); 
 
+/* Icon Shortcodes */
+require_once( __DIR__ . '/icon.php' ); 
+
 /* Author Shortcodes */
 require_once( __DIR__ . '/author.php' ); 
 

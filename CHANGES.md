@@ -1,3 +1,5 @@
+- Added icon shortcode
+
 0.1.1
 - Updated Disable Emoji
 - Added templating logic
