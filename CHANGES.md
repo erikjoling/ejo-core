@@ -1,3 +1,4 @@
+- Added icon print function for php
 - Added icon shortcode
 
 0.1.1

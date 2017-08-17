@@ -15,7 +15,7 @@ function ejo_get_icon( $atts )
     foreach ($atts as $key => $value) {
         if (is_int($key)) {
             if ($value == 'circle') {
-                $atts['circle'] = 'circle';
+                $atts['circle'] = true;
             }
             else {
                 $atts['icon'] = $value;   
@@ -27,7 +27,7 @@ function ejo_get_icon( $atts )
     // Defaults
     $atts = shortcode_atts( array(
         'icon' => false,
-        'circle' => ''
+        'circle' => false
     ), $atts );
 
     // Break if no icon
@@ -35,8 +35,22 @@ function ejo_get_icon( $atts )
         return '';
     }
 
+    $icon_class = apply_filters( 'ejo_icon_class', 'icon' );
     $icon_prefix = apply_filters( 'ejo_icon_prefix', 'fa-' );
+    $circle_class = ($atts['circle']) ? 'circle' : '';
     
     // Return the icon html
-    return sprintf('<span class="%s %s" aria-hidden="true"></span>', $icon_prefix.$atts['icon'], $atts['circle']);
+    return sprintf('<span class="%s %s %s" aria-hidden="true"></span>', $icon_class, $icon_prefix.$atts['icon'], $circle_class);
+}
+
+/**
+ * Helper function for quickly outputting icons in php 
+ */
+function ejo_the_icon($icon_name, $circle = false) {
+
+    $atts = array();
+    $atts['icon'] = $icon_name;
+    $atts['circle'] = $circle;
+
+    echo ejo_get_icon($atts);
 }
