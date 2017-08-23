@@ -4,10 +4,7 @@
 add_action( 'admin_menu', 'ejo_change_menu_order' );
 
 /* Change Appearance submenu order */
-add_action( 'admin_menu', 'ejo_change_appearance_menu_order' );
-
-/* Remove Themes submenu */
-add_action( 'admin_menu', 'ejo_remove_themes_submenu', 99 );
+add_action( 'admin_menu', 'ejo_edit_appearance_menu', 100 );
 
 /* Remove Tools submenu */
 add_action( 'admin_menu', 'ejo_remove_tools_submenu', 99 );
@@ -78,7 +75,7 @@ function ejo_change_menu_order()
 	ksort($menu);
 }
 
-function ejo_change_appearance_menu_order() 
+function ejo_edit_appearance_menu() 
 {
 	global $submenu;
 
@@ -98,9 +95,13 @@ function ejo_change_appearance_menu_order()
         	$menus_index = $index;
 
         //* Customizer menu
-        elseif ($menu_item[2] == 'customize.php?return=%2Fwp-admin%2F' )
+        elseif ($menu_item[0] == 'Customizer' )
         	$customizer_index = $index;
     }
+
+    /**
+     * Reorder
+     */
 
     if ( isset($themes_index) ) {
 
@@ -108,31 +109,42 @@ function ejo_change_appearance_menu_order()
 		$submenu['themes.php'][$themes_index][1] = 'manage_options';
 	}
 
-	if ( isset($menus_index) && isset($customizer_index) ) {
+	if ( isset($customizer_index) ) {
 
-		//* Move Customizer to after menus
-	    $submenu['themes.php'][$menus_index + 1] = $submenu['themes.php'][$customizer_index];
+		//* Move Customizer to last position
+	    $submenu['themes.php'][99] = $submenu['themes.php'][$customizer_index];
 
 	    //* Remove previous customizer location
 	    unset($submenu['themes.php'][$customizer_index]);
+
+        // Keep track of new customizer index
+        $customizer_index = 99;
 	}
 
 	ksort($submenu['themes.php']);
-}
 
-function ejo_remove_themes_submenu()
-{	
-	/**
-	 * Remove themes.php from menu (for non-admins)
-	 *
-	 * Changing capabilities results in themes.php?subpages
-	 * not being shown to non-admins i.e. simple-testimonials
-	 */
-	if ( !current_user_can('manage_options') ) {
-		remove_submenu_page( 'themes.php', 'themes.php' );
-	}
-}
+    /**
+     * Remove
+     */
 
+    /**
+     * Remove themes.php from menu (for non-admins)
+     *
+     * Changing capabilities results in themes.php?subpages
+     * not being shown to non-admins i.e. simple-testimonials
+     */
+    if ( !current_user_can('manage_options') ) {
+        remove_submenu_page( 'themes.php', 'themes.php' );
+    }
+
+    // Remove Customizer
+    if (apply_filters( 'ejo_remove_customizer_menu', true ) && isset($customizer_index)) {
+        unset($submenu['themes.php'][$customizer_index]);
+    }
+
+    /* Remove Editor Submenu */
+    remove_action( 'admin_menu', '_add_themes_utility_last', 101 );
+}
 
 /* Remove Tools Submenu */
 function ejo_remove_tools_submenu()
