@@ -108,6 +108,9 @@ function ejo_get_content_template( $post_type = '', $template_type = '', $requir
     $templates[] = $template_parts_dir. "content/{$post_type}.php";
 
     // Fallback 'content.php' template.
+    if ($template_type)
+        $templates[] = $template_parts_dir. "content/content-{$template_type}.php"; 
+
     $templates[] = $template_parts_dir. 'content/content.php';
 
     // Apply filters to the templates array.
