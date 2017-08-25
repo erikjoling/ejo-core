@@ -1,3 +1,4 @@
+- Fixed archive bug when retrieving body-classes
 - Cleanud up appearance menu
 - Added icon print function for php
 - Added icon shortcode

@@ -8,8 +8,8 @@ add_filter( 'body_class', 'ejo_body_class_filter' );
  */
 function ejo_body_class_filter( $classes ) {
 
-    $post    = get_queried_object();
-    $post_id = get_queried_object_id();
+    $queried_object    = get_queried_object();
+    $queried_object_id = get_queried_object_id();
 
     $classes = array();
 
@@ -24,7 +24,7 @@ function ejo_body_class_filter( $classes ) {
     if ( is_singular() ) {
 
         $classes[] = 'singular-view';
-        $classes[] = "{$post->post_type}-view";
+        $classes[] = "{$queried_object->post_type}-view";
 
         // Front page.
         if ( is_front_page() ) {
@@ -34,7 +34,7 @@ function ejo_body_class_filter( $classes ) {
         if ( is_page_template() ) {
             // Set `templates` as default templates folder
             $template_dir = trailingslashit(apply_filters( 'ejo_template_dir', 'templates' ));
-            $template_slug = get_page_template_slug( $post_id );
+            $template_slug = get_page_template_slug( $queried_object_id );
             $template_slug = str_replace($template_dir, '', $template_slug); // Remove this themes custom template directory 
 
             $classes[] = sanitize_html_class( str_replace( array( '.', '/' ), '-', basename( $template_slug, '.php' ) ) );
@@ -47,10 +47,10 @@ function ejo_body_class_filter( $classes ) {
 
         // Post type archives.
         if ( is_post_type_archive() ) {
-            $classes[] = "{$post->post_type}-archive-view";
+            $classes[] = "{$queried_object->name}-archive-view";
         }
         elseif ( is_tax() || is_category() || is_tag() ) {
-            $classes[] = "{$post->taxonomy}-taxonomy-view";
+            $classes[] = "{$queried_object->taxonomy}-taxonomy-view";
         }
     }
     elseif ( is_search() ) {
