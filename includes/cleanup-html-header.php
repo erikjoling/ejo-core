@@ -15,13 +15,13 @@ $html_header_elements = array(
 $html_header_elements = apply_filters( 'ejo_remove_html_header_elements', $html_header_elements );
 
 /* Windows Live Writer manifest */
-if (isset($html_header_elements['wlw'])) {
+if ( in_array( 'wlw', $html_header_elements ) ) {
 
 	remove_action( 'wp_head', 'wlwmanifest_link' ); 
 }
 
 /* WordPress version meta */
-if (isset($html_header_elements['wp_version'])) {
+if ( in_array( 'wp_version', $html_header_elements ) ) {
 
 	remove_action( 'wp_head', 'wp_generator' ); 
 }
