@@ -75,7 +75,10 @@ function ejo_get_content_template( $post_type = '', $template_type = '', $requir
     $templates = array();
 
     // Set `template-parts` as default template-parts folder
-    $template_parts_dir = trailingslashit(apply_filters( 'ejo_template_parts_dir', 'template-parts' ));
+    $template_parts_dir = apply_filters( 'ejo_template_parts_dir', 'template-parts' );
+
+    // Set `content` as default entries folder
+    $entries_dir = apply_filters( 'ejo_entries_dir', 'content' );
 
     // Process given input
     if (!$post_type) {
@@ -94,8 +97,8 @@ function ejo_get_content_template( $post_type = '', $template_type = '', $requir
     // Process template based off the post type and template type.
     if ($template_type) {
 
-        $templates[] = $template_parts_dir. "content/{$post_type}/{$post_type}-{$template_type}.php";
-        $templates[] = $template_parts_dir. "content/{$post_type}-{$template_type}.php";
+        $templates[] = "{$template_parts_dir}/{$entries_dir}/{$post_type}/{$post_type}-{$template_type}.php";
+        $templates[] = "{$template_parts_dir}/{$entries_dir}/{$post_type}-{$template_type}.php";
     }
 
     // If template type is plural then we need to include the template-part more than once
@@ -104,14 +107,14 @@ function ejo_get_content_template( $post_type = '', $template_type = '', $requir
     }
 
     // Template based off the post type.
-    $templates[] = $template_parts_dir. "content/{$post_type}/{$post_type}.php";
-    $templates[] = $template_parts_dir. "content/{$post_type}.php";
+    $templates[] = "{$template_parts_dir}/{$entries_dir}/{$post_type}/{$post_type}.php";
+    $templates[] = "{$template_parts_dir}/{$entries_dir}/{$post_type}.php";
 
     // Fallback 'content.php' template.
     if ($template_type)
-        $templates[] = $template_parts_dir. "content/content-{$template_type}.php"; 
+        $templates[] = "{$template_parts_dir}/{$entries_dir}/content-{$template_type}.php"; 
 
-    $templates[] = $template_parts_dir. 'content/content.php';
+    $templates[] = "{$template_parts_dir}/{$entries_dir}/content.php";
 
     // Apply filters to the templates array.
     $templates = apply_filters( 'ejo_content_template_hierarchy', $templates );

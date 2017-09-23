@@ -19,7 +19,7 @@ final class EJO_Core
     private static $_instance = null;
 
     /* Version number */
-    public static $version = '0.1.1';
+    public static $version = '0.1.2';
 
     /* Store the slug */
     public static $slug = 'ejo-core';
