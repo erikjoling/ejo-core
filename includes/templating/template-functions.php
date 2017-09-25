@@ -80,6 +80,9 @@ function ejo_get_content_template( $post_type = '', $template_type = '', $requir
     // Set `content` as default entries folder
     $entries_dir = apply_filters( 'ejo_entries_dir', 'content' );
 
+    // Set `content` as default entry file
+    $entry_file = apply_filters( 'ejo_default_entry_basename', 'content' );
+
     // Process given input
     if (!$post_type) {
         
@@ -112,9 +115,9 @@ function ejo_get_content_template( $post_type = '', $template_type = '', $requir
 
     // Fallback 'content.php' template.
     if ($template_type)
-        $templates[] = "{$template_parts_dir}/{$entries_dir}/content-{$template_type}.php"; 
+        $templates[] = "{$template_parts_dir}/{$entries_dir}/{$entry_file}-{$template_type}.php"; 
 
-    $templates[] = "{$template_parts_dir}/{$entries_dir}/content.php";
+    $templates[] = "{$template_parts_dir}/{$entries_dir}/{$entry_file}.php";
 
     // Apply filters to the templates array.
     $templates = apply_filters( 'ejo_content_template_hierarchy', $templates );

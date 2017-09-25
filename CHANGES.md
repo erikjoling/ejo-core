@@ -1,3 +1,5 @@
+- Allow custom basename for default entry template-part (defaults to `content`)
+
 0.1.2
 - Allow custom `content` folder (`entries` is a better name) inside `template-parts`
 - Fixed cleanup-html-header bug
