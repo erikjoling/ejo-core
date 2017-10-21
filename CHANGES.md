@@ -1,3 +1,5 @@
+0.1.3
+- Integrated carbon-fields helper
 - Allow custom basename for default entry template-part (defaults to `content`)
 
 0.1.2

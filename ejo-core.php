@@ -19,7 +19,7 @@ final class EJO_Core
     private static $_instance = null;
 
     /* Version number */
-    public static $version = '0.1.2';
+    public static $version = '0.1.3';
 
     /* Store the slug */
     public static $slug = 'ejo-core';
@@ -80,6 +80,9 @@ final class EJO_Core
 
         /* Theme helpers */
         require_once( EJO_CORE_DIR . 'includes/_helpers/misc.php' );
+
+        /* Carbon Fields */
+        require_once( EJO_CORE_DIR . 'includes/carbon-fields.php' );
     }
 
     /* Templating Logic */
