@@ -1,3 +1,11 @@
+0.2
+- Included often used assets
+- Added helper function for getting post-id of post-type archives
+- Changed start method of framework to start at file-include
+- Prefixed all custom theme-support functionality with `ejo-`
+- Integrated more theme-control to ejo-core (constants and theme-support)
+- Removed unused ejo-client file
+
 0.1.3
 - Integrated carbon-fields helper
 - Allow custom basename for default entry template-part (defaults to `content`)
