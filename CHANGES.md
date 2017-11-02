@@ -1,3 +1,6 @@
+0.2.1
+- Included royalslider to assets
+
 0.2
 - Included often used assets
 - Added helper function for getting post-id of post-type archives
