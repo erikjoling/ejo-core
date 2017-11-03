@@ -58,6 +58,9 @@ final class EJO_Core
         //* Define Includes Directory
         if ( ! defined( 'THEME_INC_DIR' ) ) define( 'THEME_INC_DIR', THEME_DIR . 'includes/' );
         if ( ! defined( 'THEME_INC_URI' ) ) define( 'THEME_INC_URI', THEME_URI . 'includes/' );
+        
+        // Composer Vendor Dir
+        if ( ! defined( 'THEME_VENDOR_DIR' ) ) define( 'THEME_VENDOR_DIR', THEME_DIR . 'vendor/' );
 
         //* Set Version
         if ( ! defined( 'THEME_VERSION' ) ) define( 'THEME_VERSION', wp_get_theme()->get( 'Version' ) );

@@ -1,3 +1,4 @@
+- Added vendor directory global
 - Added composer configuration
 
 0.2.1
