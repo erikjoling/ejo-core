@@ -70,7 +70,7 @@ final class EJO_Core
         if ( ! defined( 'THEME_VENDOR_URI' ) ) define( 'THEME_VENDOR_URI', THEME_URI . 'assets/dist/vendor/' );    
 
         // TODO: Better to get the path of ejo-core automatically in stead of manually...
-        $relative_framework_path = trailingslashit( apply_filters( 'ejocore_relative_framework_path', 'includes/vendor/' ) );
+        $relative_framework_path = trailingslashit( apply_filters( 'ejocore_relative_framework_path', 'vendor/ejoweb/' ) );
 
         // Sets the path to the core framework directory.
         if ( ! defined( 'EJO_CORE_DIR' ) )
