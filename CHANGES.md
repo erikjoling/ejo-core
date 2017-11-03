@@ -1,3 +1,5 @@
+- Added composer configuration
+
 0.2.1
 - Included royalslider to assets
 
