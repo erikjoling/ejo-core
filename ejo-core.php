@@ -13,8 +13,8 @@
 /**
  * Singleton
  */
-final class EJO_Core 
-{
+final class EJO_Core {
+    
     /* Holds the instance of this Singleton class. */
     private static $_instance = null;
 

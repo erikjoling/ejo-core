@@ -47,8 +47,10 @@ function ejo_get_footer() {
 /**
  * Allow custom template directory 
  * Replaces WordPress Core version
+ *
+ * @param string $slug
  */
-function ejo_get_template_part( $slug, $require_once = true ) {
+function ejo_get_template_part( $slug ) {
 
     // Just like WordPress Core...
     do_action( "get_template_part_{$slug}", $slug, '' );
@@ -60,16 +62,32 @@ function ejo_get_template_part( $slug, $require_once = true ) {
     $templates = array(); 
     $templates[] = $template_parts_dir . $slug . '.php';
 
-    locate_template($templates, true, $require_once );
+    return locate_template($templates);
+}
+
+/**
+ * Load template part
+ *
+ * @param string  $slug 
+ * @param boolean $require_once 
+ */
+function ejo_load_template_part( $slug, $require_once = true ) {
+
+    $template_part = ejo_get_template_part( $slug );
+
+    if ( ! empty($template_part) )
+        load_template( $template_part, $require_once );
+    else 
+        return false;
 }
 
 /**
  * Calculate which content template to get
- * Has a fallback hierarchy, whicht ejo_get_template_part has not
+ * Has a fallback hierarchy, which ejo_get_template_part has not
  *
  * Inspired by Justin Tadlock
  */
-function ejo_get_content_template( $post_type = '', $template_type = '', $require_once = true) {
+function ejo_get_content_template( $post_type = '', $template_type = '') {
     
     // Set up an empty array and get the post type.
     $templates = array();
@@ -104,11 +122,6 @@ function ejo_get_content_template( $post_type = '', $template_type = '', $requir
         $templates[] = "{$template_parts_dir}/{$entries_dir}/{$post_type}-{$template_type}.php";
     }
 
-    // If template type is plural then we need to include the template-part more than once
-    if ($template_type == 'plural') {
-        $require_once = false;        
-    }
-
     // Template based off the post type.
     $templates[] = "{$template_parts_dir}/{$entries_dir}/{$post_type}/{$post_type}.php";
     $templates[] = "{$template_parts_dir}/{$entries_dir}/{$post_type}.php";
@@ -122,7 +135,69 @@ function ejo_get_content_template( $post_type = '', $template_type = '', $requir
     // Apply filters to the templates array.
     $templates = apply_filters( 'ejo_content_template_hierarchy', $templates );
 
-    // Locate the template.
-    locate_template($templates, true, $require_once );
+     // Locate the template.
+    return locate_template($templates);
 }
 
+/**
+ * Load content template
+ *
+ * @param string $post_type
+ * @param string $template_type (file or slug)
+ * @param mixed  $require_once (null or boolean)
+ */
+function ejo_load_content_template( $post_type = '', $template_type = '', $require_once = null ) {
+    
+    // If file is not a php-file then assume it's a slug and get file
+    $template_part = ejo_get_content_template($post_type, $template_type);
+
+    if ($require_once === null) {
+        if ( strpos( basename($template_part), '-plural' ) !== false ) {
+            $require_once = false;
+        }
+        elseif ( is_archive() || is_home() ) {
+            $require_once = false;
+        }
+        else {
+            $require_once = true;            
+        }
+    }
+
+    if ( ! empty($template_part) )
+        load_template( $template_part, $require_once );
+    else 
+        return false;
+}
+
+/**
+ * Check if file is a template_part
+ *
+ * Note: Not in use currently, but keeping it here for reference
+ *
+ * @param string $file
+ */
+function ejo_is_template_part($file) {
+
+    _deprecated_function( __FUNCTION__, 'Ejo Core 0.3', 'Function is under consideration.' );
+
+    // Get template-parts path
+    $template_parts_path = trailingslashit(THEME_DIR . apply_filters( 'ejo_template_parts_dir', 'template-parts' ));
+
+    // Expect php extension
+    $template_part_extension = 'php';
+
+    // Get pathinfo of the file
+    $file_pathinfo = pathinfo($file);
+
+    // Check if file has the expected template-part extension
+    if ( ! isset($file_pathinfo['extension']) || $file_pathinfo['extension'] != $template_part_extension) {
+        return false;
+    }
+
+    // Check if file is located in template-parts directory
+    if ( ! isset($file_pathinfo['dirname']) || strpos($file_pathinfo['dirname'], $template_parts_path) === false ) {
+        return false;
+    }
+
+    return true;
+}
