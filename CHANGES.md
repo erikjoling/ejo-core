@@ -1,3 +1,4 @@
+0.3
 - Refactored templating functions
 - Added vendor directory global
 - Added composer configuration
