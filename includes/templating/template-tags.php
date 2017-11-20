@@ -1,15 +1,31 @@
 <?php 
 
 /**
- * Function for figuring out if we're viewing a "plural" page.  In WP, these pages are archives,
- * search results, and the home/blog posts index.  Note that this is similar to, but not quite
- * the same as `!is_singular()`, which wouldn't account for the 404 page.
+ * Check whether we're on a "archive" page. WordPress doesn't provide this.
  *
- * @since  3.0.0
+ * @access public
+ * @return bool
+ */
+function ejo_is_archive() {
+    return ( is_home() || is_post_type_archive() );
+}
+
+/**
+ * Check whether we're on a "taxonomy" page. WordPress doesn't provide this.
+ *
+ * @access public
+ * @return bool
+ */
+function ejo_is_tax() {
+    return ( is_category() || is_tag() || is_tax() );
+}
+
+/**
+ * Check whether we're on a "plural" page. WordPress doesn't provide this.
+ *
  * @access public
  * @return bool
  */
 function ejo_is_plural() {
-    return ( is_home() || is_archive() || is_search() );
+    return ( ejo_is_archive() || ejo_is_tax() || is_search() );
 }
-

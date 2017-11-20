@@ -96,11 +96,12 @@ final class EJO_Core {
     /* Templating Logic */
     public static function templating() 
     {
-        require_once( EJO_CORE_DIR . 'includes/templating/template-get-post-id.php' ); // Custom post-id getter
+        require_once( EJO_CORE_DIR . 'includes/templating/template.php' );             // Main template functionality
+        require_once( EJO_CORE_DIR . 'includes/templating/template-post.php' );        // Template post functions
         require_once( EJO_CORE_DIR . 'includes/templating/template-functions.php' );   // Template functions
-        require_once( EJO_CORE_DIR . 'includes/templating/template-structure.php' );   // Template Structure
+        require_once( EJO_CORE_DIR . 'includes/templating/template-hierarchy.php' );   // Template hierarchy
         require_once( EJO_CORE_DIR . 'includes/templating/template-tags.php' );        // Template Tags
-        require_once( EJO_CORE_DIR . 'includes/templating/template-misc.php' );        // Template misc
+        require_once( EJO_CORE_DIR . 'includes/templating/template-context.php' );     // Template context
 
         // Widget Template Loader Class
         require_once( EJO_CORE_DIR . 'includes/templating/widget-template-loader/widget-template-loader.php' ); 

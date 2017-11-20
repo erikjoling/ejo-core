@@ -1,3 +1,8 @@
+- Renamed template files
+- Added ejo_the_time and ejo_get_time to print publish time
+- Renamed ejo_load_template_part to ejo_the_template_part
+- Renamed ejo_load_content_template to ejo_the_content_template
+
 0.3
 - Refactored templating functions
 - Added vendor directory global
