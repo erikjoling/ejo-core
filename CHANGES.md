@@ -1,3 +1,4 @@
+0.3.1
 - Renamed template files
 - Added ejo_the_time and ejo_get_time to print publish time
 - Renamed ejo_load_template_part to ejo_the_template_part
