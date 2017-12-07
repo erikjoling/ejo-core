@@ -1,3 +1,7 @@
+0.3.2
+- Added ejo_setup_postdata utility
+- Fixed bug in `ejo_the_content_template` where plural template-parts only got loaded once
+
 0.3.1
 - Renamed template files
 - Added ejo_the_time and ejo_get_time to print publish time

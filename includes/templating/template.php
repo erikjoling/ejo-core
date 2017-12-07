@@ -152,7 +152,7 @@ function ejo_the_content_template( $post_type = '', $template_type = '', $requir
     $template_part = ejo_get_content_template($post_type, $template_type);
 
     if ($require_once === null) {
-        if ( strpos( basename($template_part), '-plural' ) !== false ) {
+        if ( $template_type == 'plural' || strpos( basename($template_part), '-plural' ) !== false ) {
             $require_once = false;
         }
         elseif ( is_archive() || is_home() ) {
@@ -169,6 +169,22 @@ function ejo_the_content_template( $post_type = '', $template_type = '', $requir
         return false;
 }
 
+/**
+ * Shortcut for setting up custom postdata. Don't forget to reset postdata afterwards
+ */
+function ejo_setup_postdata($post) {
+
+    // Set the $post as the global $post object
+    $GLOBALS['post'] = get_post($post); 
+
+    // Setup the post data.
+    setup_postdata($GLOBALS['post']); 
+}
+
+
+
+
+// *** DEPRECATED FUNCTIONS *** //
 
 /**
  * Load template part
