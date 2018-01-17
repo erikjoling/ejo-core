@@ -11,7 +11,7 @@ function ejo_get_header() {
     do_action( 'get_header' );
 
     /* Set `template-parts` as default folder */
-    $template_parts_dir = trailingslashit(apply_filters( 'ejo_template_parts_dir', 'template-parts' ));
+    $template_parts_dir = ejo_get_template_part_dir();
 
     /* Set template hierarchy for header */
     $templates = array();
@@ -33,7 +33,7 @@ function ejo_get_footer() {
     do_action( 'get_footer' );
 
     /* Set `template-parts` as default folder */
-    $template_parts_dir = trailingslashit(apply_filters( 'ejo_template_parts_dir', 'template-parts' ));
+    $template_parts_dir = ejo_get_template_part_dir();
 
     /* Set template hierarchy for footer */
     $templates = array();
@@ -56,7 +56,7 @@ function ejo_get_template_part( $slug ) {
     do_action( "get_template_part_{$slug}", $slug, '' );
 
     // Set `template-parts` as default template-parts folder
-    $template_parts_dir = trailingslashit(apply_filters( 'ejo_template_parts_dir', 'template-parts' ));
+    $template_parts_dir = ejo_get_template_part_dir();
     
     // Generate template
     $templates = array(); 
@@ -92,8 +92,8 @@ function ejo_get_content_template( $post_type = '', $template_type = '') {
     // Set up an empty array and get the post type.
     $templates = array();
 
-    // Set `template-parts` as default template-parts folder
-    $template_parts_dir = apply_filters( 'ejo_template_parts_dir', 'template-parts' );
+    // Get template parts directory withouth the trailing slash
+    $template_parts_dir = untrailingslashit( ejo_get_template_part_dir() );
 
     // Set `content` as default entries folder
     $entries_dir = apply_filters( 'ejo_entries_dir', 'content' );
@@ -135,7 +135,7 @@ function ejo_get_content_template( $post_type = '', $template_type = '') {
     // Apply filters to the templates array.
     $templates = apply_filters( 'ejo_content_template_hierarchy', $templates );
 
-     // Locate the template.
+    // Locate the template.
     return locate_template($templates);
 }
 

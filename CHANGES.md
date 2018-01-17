@@ -1,3 +1,8 @@
+0.3.3
+- Moved `template-parts` folder to `templates/parts` by default
+- Added template-helpers file
+- Improved class setup
+
 0.3.2
 - Added ejo_setup_postdata utility
 - Fixed bug in `ejo_the_content_template` where plural template-parts only got loaded once

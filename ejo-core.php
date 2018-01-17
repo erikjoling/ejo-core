@@ -6,7 +6,7 @@
  *
  * @package   EJO Core
  * @author    Erik Joling <erik@ejoweb.nl>
- * @copyright Copyright (c) 2017, Erik Joling
+ * @copyright Copyright (c) 2018, Erik Joling
  * @link      https://github.com/erikjoling/ejo-core
  */
 
@@ -15,100 +15,168 @@
  */
 final class EJO_Core {
     
-    /* Holds the instance of this Singleton class. */
-    private static $_instance = null;
+    // Version number
+    public $version = '0.3.3';
 
-    /* Version number */
-    public static $version = '0.3.2';
-
-    /* Store the slug */
-    public static $slug = 'ejo-core';
+    // Store the slug
+    public $slug = 'ejo-core';
 
     /**
-     * Singleton implementation
+     * Framework directory path with trailing slash.
+     *
+     * @access public
+     * @var    string
      */
-    public static function load() 
-    {
-        if ( !self::$_instance )
-            self::$_instance = new self;
-        return self::$_instance;
+    public $dir = '';
+
+    /**
+     * Framework directory URI with trailing slash.
+     *
+     * @access public
+     * @var    string
+     */
+    public $uri = '';
+
+    /**
+     * Framework directory path with trailing slash.
+     *
+     * @access public
+     * @var    string
+     */
+    public $theme_dir = '';
+
+    /**
+     * Framework directory URI with trailing slash.
+     *
+     * @access public
+     * @var    string
+     */
+    public $theme_uri = '';
+
+    /**
+     * Returns the instance.
+     *
+     * @access public
+     * @return object
+     */
+    public static function get_instance() {
+
+        static $instance = null;
+
+        if ( is_null( $instance ) ) {
+            $instance = new self;
+            $instance->setup();
+            $instance->setup_actions();
+        }
+
+        return $instance;
     }
 
-    //* No cloning
+    /**
+     * Clone method.
+     *
+     * @access private
+     * @return void
+     */
     private function __clone() {}
-
-    /* Plugin setup. */
-    private function __construct() {
-        
-        add_action( 'after_setup_theme', array( 'EJO_Core', 'constants' ),    -95 ); // Setup plugin
-        add_action( 'after_setup_theme', array( 'EJO_Core', 'helpers' ),       -1 ); // Make helpers available early on
-        add_action( 'after_setup_theme', array( 'EJO_Core', 'templating' ),     8 ); // Templating
-        add_action( 'after_setup_theme', array( 'EJO_Core', 'theme_support' ),  9 ); // Theme Support
-        add_action( 'after_setup_theme', array( 'EJO_Core', 'mold' ),          15 ); // Molding WordPress. Loaded after theme setup so themes can manipulate it
-        add_action( 'after_setup_theme', array( 'EJO_Core', 'ejopack' ),       15 ); // EJOpack. Should be extracted a plugin    
-    }
     
-    /* Defines Constants. */
-    public static function constants() {
+    /**
+     * Constructor method.
+     *
+     * @access private
+     * @return void
+     */
+    private function __construct() {}
 
-        //* Get the template directory and uri and make sure it has a trailing slash.
-        if ( ! defined( 'THEME_DIR' ) ) define( 'THEME_DIR', trailingslashit( get_template_directory() ) );        
+    /**
+     * Sets up the framework.
+     *
+     * @access private
+     * @return void
+     */
+    private function setup() {
+
+        // Set Theme Directory Constants
+        if ( ! defined( 'THEME_DIR' ) ) define( 'THEME_DIR', trailingslashit( get_template_directory() ) );
         if ( ! defined( 'THEME_URI' ) ) define( 'THEME_URI', trailingslashit( get_template_directory_uri() ) );
 
+        // Set the directory properties.
+        $this->theme_dir = THEME_DIR;
+        $this->theme_uri = THEME_URI;
+
+        // Abort if EJO_CORE_DIR or EJO_CORE_URI are not defined.
+        if ( ! defined( 'EJO_CORE_DIR' ) || ! defined( 'EJO_CORE_URI' ) ) {
+            wp_die( '`EJO_CORE_DIR` and `EJO_CORE_URI` should be defined before calling EJO-core framework', 'Error while setting up EJO-core' );
+        } 
+        
+        // Set the framework properties
+        $this->dir = EJO_CORE_DIR;
+        $this->uri = EJO_CORE_URI;
+    }
+
+    /**
+     * Sets up the framework.
+     *
+     * @access private
+     * @return void
+     */
+    private function setup_actions() {
+        
+        add_action( 'after_setup_theme', array( $this, 'constants' ),    -95 ); // Setup plugin
+        add_action( 'after_setup_theme', array( $this, 'helpers' ),       -1 ); // Make helpers available early on
+        add_action( 'after_setup_theme', array( $this, 'templating' ),     8 ); // Templating
+        add_action( 'after_setup_theme', array( $this, 'theme_support' ),  9 ); // Theme Support
+        add_action( 'after_setup_theme', array( $this, 'mold' ),          15 ); // Molding WordPress. Loaded after theme setup so themes can manipulate it
+        add_action( 'after_setup_theme', array( $this, 'ejopack' ),       15 ); // EJOpack. Should be extracted a plugin    
+    }
+
+    /* Defines Constants. */
+    public function constants() {
+
         //* Define Includes Directory
-        if ( ! defined( 'THEME_INC_DIR' ) ) define( 'THEME_INC_DIR', THEME_DIR . 'includes/' );
-        if ( ! defined( 'THEME_INC_URI' ) ) define( 'THEME_INC_URI', THEME_URI . 'includes/' );
+        if ( ! defined( 'THEME_INC_DIR' ) ) define( 'THEME_INC_DIR', $this->theme_dir . 'includes/' );
+        if ( ! defined( 'THEME_INC_URI' ) ) define( 'THEME_INC_URI', $this->theme_uri . 'includes/' );
         
         // Composer Vendor Dir
-        if ( ! defined( 'THEME_VENDOR_DIR' ) ) define( 'THEME_VENDOR_DIR', THEME_DIR . 'vendor/' );
+        if ( ! defined( 'THEME_VENDOR_DIR' ) ) define( 'THEME_VENDOR_DIR', $this->theme_dir . 'vendor/' );
 
         //* Set Version
         if ( ! defined( 'THEME_VERSION' ) ) define( 'THEME_VERSION', wp_get_theme()->get( 'Version' ) );
 
         //* Set paths to asset folders.
-        if ( ! defined( 'THEME_IMG_URI' ) )    define( 'THEME_IMG_URI',    THEME_URI . 'assets/dist/images/' );
-        if ( ! defined( 'THEME_JS_URI' ) )     define( 'THEME_JS_URI',     THEME_URI . 'assets/dist/js/' );
-        if ( ! defined( 'THEME_CSS_URI' ) )    define( 'THEME_CSS_URI',    THEME_URI . 'assets/dist/css/' );
-        if ( ! defined( 'THEME_FONT_URI' ) )   define( 'THEME_FONT_URI',   THEME_URI . 'assets/dist/fonts/' );    
-        if ( ! defined( 'THEME_VENDOR_URI' ) ) define( 'THEME_VENDOR_URI', THEME_URI . 'assets/dist/vendor/' );    
-
-        // TODO: Better to get the path of ejo-core automatically in stead of manually...
-        $relative_framework_path = trailingslashit( apply_filters( 'ejocore_relative_framework_path', 'vendor/ejoweb/' ) );
-
-        // Sets the path to the core framework directory.
-        if ( ! defined( 'EJO_CORE_DIR' ) )
-            define( 'EJO_CORE_DIR', trailingslashit( THEME_DIR . $relative_framework_path . basename( dirname( __FILE__ ) ) ) );
-
-        // Sets the path to the core framework directory URI.
-        if ( ! defined( 'EJO_CORE_URI' ) )
-            define( 'EJO_CORE_URI', trailingslashit( THEME_URI . $relative_framework_path . basename( dirname( __FILE__ ) ) ) );
+        if ( ! defined( 'THEME_IMG_URI' ) )    define( 'THEME_IMG_URI',    $this->theme_uri . 'assets/images/' );
+        if ( ! defined( 'THEME_JS_URI' ) )     define( 'THEME_JS_URI',     $this->theme_uri . 'assets/js/' );
+        if ( ! defined( 'THEME_CSS_URI' ) )    define( 'THEME_CSS_URI',    $this->theme_uri . 'assets/css/' );
+        if ( ! defined( 'THEME_FONT_URI' ) )   define( 'THEME_FONT_URI',   $this->theme_uri . 'assets/fonts/' );    
+        if ( ! defined( 'THEME_VENDOR_URI' ) ) define( 'THEME_VENDOR_URI', $this->theme_uri . 'assets/vendor/' );
     }
 
     /* Add helper functions */
-    public static function helpers() {
+    public function helpers() {
 
-        require_once( EJO_CORE_DIR . 'includes/helpers/write-log.php' );       // Write Log
-        require_once( EJO_CORE_DIR . 'includes/helpers/misc.php' );            // Theme helpers
-        require_once( EJO_CORE_DIR . 'includes/helpers/enqueue-plugins.php' ); // Make it easy to add shipped common assets like magnific-popup
-        require_once( EJO_CORE_DIR . 'includes/helpers/carbon-fields.php' );   // Carbon Fields
+        require_once( $this->dir . 'includes/helpers/write-log.php' );       // Write Log
+        require_once( $this->dir . 'includes/helpers/misc.php' );            // Theme helpers
+        require_once( $this->dir . 'includes/helpers/enqueue-plugins.php' ); // Make it easy to add shipped common assets like magnific-popup
+        require_once( $this->dir . 'includes/helpers/carbon-fields.php' );   // Carbon Fields
     }
 
     /* Templating Logic */
-    public static function templating() 
+    public function templating() 
     {
-        require_once( EJO_CORE_DIR . 'includes/templating/template.php' );             // Main template functionality
-        require_once( EJO_CORE_DIR . 'includes/templating/template-post.php' );        // Template post functions
-        require_once( EJO_CORE_DIR . 'includes/templating/template-functions.php' );   // Template functions
-        require_once( EJO_CORE_DIR . 'includes/templating/template-hierarchy.php' );   // Template hierarchy
-        require_once( EJO_CORE_DIR . 'includes/templating/template-tags.php' );        // Template Tags
-        require_once( EJO_CORE_DIR . 'includes/templating/template-context.php' );     // Template context
+        require_once( $this->dir . 'includes/templating/template-helpers.php' );     // Template helpers
+        require_once( $this->dir . 'includes/templating/template.php' );             // Main template functionality
+        require_once( $this->dir . 'includes/templating/template-post.php' );        // Template post functions
+        require_once( $this->dir . 'includes/templating/template-functions.php' );   // Template functions
+        require_once( $this->dir . 'includes/templating/template-hierarchy.php' );   // Template hierarchy
+        require_once( $this->dir . 'includes/templating/template-tags.php' );        // Template Tags
+        require_once( $this->dir . 'includes/templating/template-context.php' );     // Template context
 
         // Widget Template Loader Class
-        require_once( EJO_CORE_DIR . 'includes/templating/widget-template-loader/widget-template-loader.php' ); 
+        require_once( $this->dir . 'includes/templating/widget-template-loader/widget-template-loader.php' ); 
     }
 
     /* Manage theme support */
-    public static function theme_support() 
+    public function theme_support() 
     {
         /* WordPress Core */
         add_theme_support( 'automatic-feed-links' ); // Add default posts and comments RSS feed links to head.
@@ -149,53 +217,64 @@ final class EJO_Core {
     }
     
     /* Molding WordPress */
-    public static function mold() 
+    public function mold() 
     {
         //* Remove/disable/hide unnecessary functionality
 
         /* Hide Blogging functionality */
-        require_if_theme_supports( 'ejo-hide-blogging', EJO_CORE_DIR . 'includes/hide-blogging.php' );
+        require_if_theme_supports( 'ejo-hide-blogging', $this->dir . 'includes/hide-blogging.php' );
 
         /* Cleanup unnecessary HTML Header elements */
-        require_if_theme_supports( 'ejo-cleanup-header', EJO_CORE_DIR . 'includes/cleanup-html-header.php' );
+        require_if_theme_supports( 'ejo-cleanup-header', $this->dir . 'includes/cleanup-html-header.php' );
 
         /* Disable unnecessary XML-RPC and Pingback functionality */
-        require_if_theme_supports( 'ejo-disable-xmlrpc', EJO_CORE_DIR . 'includes/disable-xmlrpc.php' );
+        require_if_theme_supports( 'ejo-disable-xmlrpc', $this->dir . 'includes/disable-xmlrpc.php' );
 
         /* Cleanup unnecessary widgets */
-        require_if_theme_supports( 'ejo-cleanup-widgets', EJO_CORE_DIR . 'includes/cleanup-widgets.php' );
+        require_if_theme_supports( 'ejo-cleanup-widgets', $this->dir . 'includes/cleanup-widgets.php' );
 
         /* Disable emoji support */
-        require_if_theme_supports( 'ejo-disable-emojis', EJO_CORE_DIR . 'includes/disable-emojis.php' );
+        require_if_theme_supports( 'ejo-disable-emojis', $this->dir . 'includes/disable-emojis.php' );
 
         //* Tweak WordPress Admin
 
         /* Mold the admin menu to my liking */
-        require_if_theme_supports( 'ejo-admin-menu', EJO_CORE_DIR . 'includes/admin-menu.php' );
+        require_if_theme_supports( 'ejo-admin-menu', $this->dir . 'includes/admin-menu.php' );
 
         /* Mold the admin dashboard to my liking */
-        require_if_theme_supports( 'ejo-admin-dashboard', EJO_CORE_DIR . 'includes/admin-dashboard.php');
+        require_if_theme_supports( 'ejo-admin-dashboard', $this->dir . 'includes/admin-dashboard.php');
 
         /* Mold the text editor to my liking */
-        require_if_theme_supports( 'ejo-text-editor', EJO_CORE_DIR . 'includes/text-editor.php' ); 
+        require_if_theme_supports( 'ejo-text-editor', $this->dir . 'includes/text-editor.php' ); 
     }
 
     /* Functionality to extract to a plugin */
-    public static function ejopack() 
+    public function ejopack() 
     {
         /* Allow admin to add scripts to entire site */
-        require_if_theme_supports( 'ejo-site-scripts', EJO_CORE_DIR . '_ejopack/custom-scripts/add-site-scripts.php' );
+        require_if_theme_supports( 'ejo-site-scripts', $this->dir . '_ejopack/custom-scripts/add-site-scripts.php' );
 
         /* Allow admin to add scripts to specific posts */
-        require_if_theme_supports( 'ejo-post-scripts', EJO_CORE_DIR . '_ejopack/custom-scripts/add-post-scripts.php' );
+        require_if_theme_supports( 'ejo-post-scripts', $this->dir . '_ejopack/custom-scripts/add-post-scripts.php' );
 
         /* Social Media */
-        require_if_theme_supports( 'ejo-social-media-links', EJO_CORE_DIR . '_ejopack/social-media/links/social-media-links.php');
+        require_if_theme_supports( 'ejo-social-media-links', $this->dir . '_ejopack/social-media/links/social-media-links.php');
 
         /* Shortcodes */
-        require_if_theme_supports( 'ejo-shortcodes', EJO_CORE_DIR . '_ejopack/shortcodes/shortcodes.php' );
+        require_if_theme_supports( 'ejo-shortcodes', $this->dir . '_ejopack/shortcodes/shortcodes.php' );
     }
 }
 
-/* Call EJO Core */
-EJO_Core::load();
+/**
+ * Gets the instance of the `EJO_Core` class.  This function is useful for quickly grabbing data
+ * used throughout the framework.
+ *
+ * @access public
+ * @return object
+ */
+function ejo_core() {
+    return EJO_Core::get_instance();
+}
+
+// Startup!
+ejo_core();
