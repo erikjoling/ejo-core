@@ -12,10 +12,10 @@ function ejoweb_link( $atts )
 {
     $atts = shortcode_atts( array(
         'text' => 'Ejoweb',
-        'title' => 'Ejoweb - WordPressbureau'
+        'title' => 'WordPress Websites'
     ), $atts );
 
-    return '<a href="https://www.ejoweb.nl" title="' . $atts['title'] . '">' . $atts['text'] . '</a>';
+    return '<a href="https://www.ejoweb.nl/" title="' . $atts['title'] . '" target="_blank">' . $atts['text'] . '</a>';
 }
 
 /** 
@@ -27,7 +27,6 @@ function ejoweb_credits( $atts )
 {
     $atts = shortcode_atts( array(
         'text' => 'Webdesign door Ejoweb',
-        'title' => 'Website gemaakt door Ejoweb'
     ), $atts );
 
     return '<span class="site-credits">' . ejoweb_link( $atts ) . '</span>';

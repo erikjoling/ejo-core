@@ -1,3 +1,6 @@
+0.3.4
+- Updated ejoweb_credits and open link in new window
+
 0.3.3
 - Moved `template-parts` folder to `templates/parts` by default
 - Added template-helpers file
