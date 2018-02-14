@@ -16,7 +16,7 @@
 final class EJO_Core {
     
     // Version number
-    public $version = '0.3.4';
+    public $version = '0.3.5';
 
     // Store the slug
     public $slug = 'ejo-core';

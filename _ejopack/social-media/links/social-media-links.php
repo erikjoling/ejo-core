@@ -60,8 +60,8 @@ class EJO_Social_Media_Links
         //* Dynamicly get this folder url
         self::$uri = EJO_CORE_URI . str_replace(EJO_CORE_DIR, '', self::$dir);
 
-        self::$menu_title = __('Social Media Links', EJO_Core::$slug);
-        self::$page_title = __('Social Media Links', EJO_Core::$slug);
+        self::$menu_title = __('Social Media Links', 'ejo-core');
+        self::$page_title = __('Social Media Links', 'ejo-core');
 
         self::$default_social_media_links = array(
             'facebook' => array( 

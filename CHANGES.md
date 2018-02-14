@@ -1,3 +1,6 @@
+0.3.5
+- Fixed wrong usage of textdomain
+
 0.3.4
 - Updated ejoweb_credits and open link in new window
 

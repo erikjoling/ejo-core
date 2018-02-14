@@ -67,7 +67,7 @@
     	</div><!-- END metabox-holder -->
 
 		<p>
-			<?php submit_button( __('Bewaar instellingen', EJO_Core::$slug), 'primary', 'submit', false ); ?>
+			<?php submit_button( __('Bewaar instellingen', 'ejo-core'), 'primary', 'submit', false ); ?>
 		</p>
 	</form>
 
