@@ -16,7 +16,7 @@
 final class EJO_Core {
     
     // Version number
-    public $version = '0.3.5';
+    public $version = '0.3.6';
 
     // Store the slug
     public $slug = 'ejo-core';
@@ -133,22 +133,25 @@ final class EJO_Core {
     /* Defines Constants. */
     public function constants() {
 
-        //* Define Includes Directory
+        // Define Includes Directory
         if ( ! defined( 'THEME_INC_DIR' ) ) define( 'THEME_INC_DIR', $this->theme_dir . 'includes/' );
         if ( ! defined( 'THEME_INC_URI' ) ) define( 'THEME_INC_URI', $this->theme_uri . 'includes/' );
         
         // Composer Vendor Dir
         if ( ! defined( 'THEME_VENDOR_DIR' ) ) define( 'THEME_VENDOR_DIR', $this->theme_dir . 'vendor/' );
 
-        //* Set Version
+        // Set Version
         if ( ! defined( 'THEME_VERSION' ) ) define( 'THEME_VERSION', wp_get_theme()->get( 'Version' ) );
 
-        //* Set paths to asset folders.
+        // Set URI's to asset folders.
         if ( ! defined( 'THEME_IMG_URI' ) )    define( 'THEME_IMG_URI',    $this->theme_uri . 'assets/images/' );
         if ( ! defined( 'THEME_JS_URI' ) )     define( 'THEME_JS_URI',     $this->theme_uri . 'assets/js/' );
         if ( ! defined( 'THEME_CSS_URI' ) )    define( 'THEME_CSS_URI',    $this->theme_uri . 'assets/css/' );
         if ( ! defined( 'THEME_FONT_URI' ) )   define( 'THEME_FONT_URI',   $this->theme_uri . 'assets/fonts/' );    
         if ( ! defined( 'THEME_VENDOR_URI' ) ) define( 'THEME_VENDOR_URI', $this->theme_uri . 'assets/vendor/' );
+
+        // Set DIR of image asset folder so we can include SVG's
+        if ( ! defined( 'THEME_IMG_DIR' ) )    define( 'THEME_IMG_DIR',    $this->theme_dir . 'assets/images/' );
     }
 
     /* Add helper functions */

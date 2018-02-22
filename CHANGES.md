@@ -1,3 +1,6 @@
+0.3.6
+- Added THEME_IMG_DIR constant (to include SVG's in templates)
+
 0.3.5
 - Fixed wrong usage of textdomain
 
