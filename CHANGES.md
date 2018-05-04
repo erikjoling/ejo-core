@@ -1,3 +1,6 @@
+0.3.7
+- Fixed template function to also see search-page articles as plural
+
 0.3.6
 - Added THEME_IMG_DIR constant (to include SVG's in templates)
 

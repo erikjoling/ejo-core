@@ -110,7 +110,7 @@ function ejo_get_content_template( $post_type = '', $template_type = '') {
         $template_type = ''; 
 
         // Add archive template_type to posts in archives
-        if ( is_archive() || is_home() ) {
+        if ( ejo_is_plural() ) {
             $template_type = 'plural';
         }
     }
